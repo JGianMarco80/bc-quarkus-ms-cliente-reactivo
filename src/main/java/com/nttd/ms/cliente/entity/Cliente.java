@@ -19,9 +19,9 @@ public class Cliente {
     //2: juridica
     private String tipoCliente;
 
-    //1: DNI
-    //2: Carnet de extranjería
-    //3: RUC
+    //1: DNI - 8
+    //2: Carnet de extranjería - 12
+    //3: RUC - 11
     private String tipoDocumento;
 
     private String numeroDocumento;
@@ -30,5 +30,5 @@ public class Cliente {
 
     private LocalDate fechaNacimientoCreacion;
 
-    private String estado = "1";
+    private String estado;
 }

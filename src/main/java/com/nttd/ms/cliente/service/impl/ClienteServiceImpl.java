@@ -1,5 +1,6 @@
 package com.nttd.ms.cliente.service.impl;
 
+import com.nttd.ms.cliente.dto.ClienteDTO;
 import com.nttd.ms.cliente.entity.Cliente;
 import com.nttd.ms.cliente.repository.ClienteRepository;
 import com.nttd.ms.cliente.service.ClienteService;
@@ -8,6 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -18,7 +20,15 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Uni<List<Cliente>> findAll() {
-        return clienteRepository.listAll();
+        return clienteRepository.listAll().onItem().transform(c -> {
+            List<Cliente> cli = new ArrayList<>();
+            for (Cliente cliente: c) {
+                if(cliente.getEstado().equals("1")) {
+                    cli.add(cliente);
+                }
+            }
+            return cli;
+        });
     }
 
     @Override
@@ -51,5 +61,21 @@ public class ClienteServiceImpl implements ClienteService {
                     c.setEstado("0");
                     return Uni.createFrom().item(c);
                 }).call(cl -> clienteRepository.update(cl));
+    }
+
+    @Override
+    public Uni<ClienteDTO> findByNumeroDocumento(String numeroDocumento) {
+        return this.findAll().onItem().transform(clientes -> {
+            ClienteDTO cliente = new ClienteDTO();
+            for (Cliente c: clientes) {
+                if(c.getNumeroDocumento().equals(numeroDocumento)) {
+                    cliente.setTipoCliente(c.getTipoCliente());
+                    cliente.setTipoDocumento(c.getTipoDocumento());
+                    cliente.setNumeroDocumento(c.getNumeroDocumento());
+                    cliente.setNombreRazonSocial(c.getNombreRazonSocial());
+                }
+            }
+            return cliente;
+        });
     }
 }

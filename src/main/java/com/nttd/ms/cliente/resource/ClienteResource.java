@@ -1,5 +1,6 @@
 package com.nttd.ms.cliente.resource;
 
+import com.nttd.ms.cliente.dto.ClienteDTO;
 import com.nttd.ms.cliente.entity.Cliente;
 import com.nttd.ms.cliente.service.ClienteService;
 import io.smallrye.mutiny.Uni;
@@ -47,5 +48,11 @@ public class ClienteResource {
     @Transactional
     public  Uni<Cliente> delete(@PathParam("id") String id){
         return clienteService.delete(id);
+    }
+
+    @GET
+    @Path("/numero-documento")
+    public Uni<ClienteDTO> findByNumeroDocumento(@QueryParam("numeroDocumento") String numeroDocumento) {
+        return clienteService.findByNumeroDocumento(numeroDocumento);
     }
 }

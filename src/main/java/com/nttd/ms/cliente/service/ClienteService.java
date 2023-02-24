@@ -1,5 +1,6 @@
 package com.nttd.ms.cliente.service;
 
+import com.nttd.ms.cliente.dto.ClienteDTO;
 import com.nttd.ms.cliente.entity.Cliente;
 import io.smallrye.mutiny.Uni;
 
@@ -17,4 +18,6 @@ public interface ClienteService {
 
     Uni<Cliente> delete(String id);
 
+
+    Uni<ClienteDTO> findByNumeroDocumento(String numeroDocumento);
 }
